@@ -82,6 +82,7 @@ public class ScreenCapture : MonoBehaviour
             debugText.text = "Save photo success";
             //Converts texture into base64 string data
             string imgData = ConvertToBase64(targetTexture);
+            debugText.text = imgData;
             firebaseManager.SavePhotoData(imgData); //saves img into firebaseManager list for upload when saving data
 
         } else

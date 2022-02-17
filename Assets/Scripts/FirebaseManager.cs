@@ -27,9 +27,9 @@ public class FirebaseManager : MonoBehaviour
     public string companyName;
 
     //Image data & text reference
-    public string imgData1;
-    public string imgData2;
-    public string imgData3;
+    public string imgData1 = "";
+    public string imgData2 = "";
+    public string imgData3 = "";
 
     public TextMeshPro imgText1;
     public TextMeshPro imgText2;
@@ -44,17 +44,7 @@ public class FirebaseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetProjectCount();
 
-        if (instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-        }
-        DontDestroyOnLoad(gameObject);
     }
 
     public void GetProfile(string userId)
@@ -77,36 +67,20 @@ public class FirebaseManager : MonoBehaviour
         });
     }
 
-    public void GetProjectCount()
-    {
-        int count = 0;
-        
-        RestClient.Get(restLink + "/projects.json").Then(response =>
-        {
-            var allProjectData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response.Text);
-            projectCount.text = allProjectData.Count.ToString();
-
-        }).Catch(error =>
-        {
-            Debug.Log(error);
-            projectCount.text = error.ToString();
-        });
-    }
-
     public void SavePhotoData(string imgData)
     {
 
-        if (imgData1 == null)
+        if (imgData1 == "")
         {
             imgData1 = imgData;
             imgText1.text = "Photo 1: Saved";
 
-        } else if (imgData2 == null)
+        } else if (imgData2 == "")
         {
             imgData2 = imgData;
             imgText2.text = "Photo 2: Saved";
 
-        } else if (imgData3 == null)
+        } else if (imgData3 == "")
         {
             imgData3 = imgData;
             imgText3.text = "Photo 3: Saved";
@@ -124,16 +98,16 @@ public class FirebaseManager : MonoBehaviour
         
         //creates json for upload
         Project newProject = new Project(companyId, creator, dateCreated, furnitureUsed, houseType, projectName, roomNumber, pictures);
-        string link = restLink + "/projects/.json?auth=" + idToken;
+        string link = restLink + "/projects/.json";
         RestClient.Post(link, newProject).Then(response => {
             Debug.Log(response.Text); //project id 
             alertSaved.SetActive(true);
             imgText1.text = "Photo 1: Empty";
             imgText2.text = "Photo 2: Empty";
             imgText3.text = "Photo 3: Empty";
-            imgData1 = null;
-            imgData2 = null;
-            imgData3 = null;
+            imgData1 = "";
+            imgData2 = "";
+            imgData3 = "";
         });
     }
 

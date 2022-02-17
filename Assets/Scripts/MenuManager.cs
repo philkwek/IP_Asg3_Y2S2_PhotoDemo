@@ -32,14 +32,7 @@ public class MenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (firebaseManager == null)
-        {
-            GameObject firebase = GameObject.Find("FirebaseManager");
-            if (firebase != null)
-            {
-                firebaseManager = firebase.GetComponent<FirebaseManager>();
-            }
-        }
+
     }
 
     public void CreateAccount()
